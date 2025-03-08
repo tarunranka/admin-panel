@@ -14,7 +14,6 @@ import {
 
 const API_BASE_URL =
   import.meta.env.VITE_API_ENDPOINT || "http://localhost:5173/api";
-
 const SALES_API_URL = `${API_BASE_URL}/sales`;
 const STOCK_API_URL = `${API_BASE_URL}/inventory`;
 
@@ -22,22 +21,57 @@ const Dashboard = () => {
   const [salesData, setSalesData] = useState([]);
   const [inventoryData, setInventoryData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    Promise.all([
-      fetch(SALES_API_URL).then((response) => response.json()),
-      fetch(STOCK_API_URL).then((response) => response.json()),
-    ])
-      .then(([sales, inventory]) => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const [salesResponse, stockResponse] = await Promise.all([
+          fetch(SALES_API_URL),
+          fetch(STOCK_API_URL),
+        ]);
+
+        if (!salesResponse.ok || !stockResponse.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        const [sales, inventory] = await Promise.all([
+          salesResponse.json(),
+          stockResponse.json(),
+        ]);
+
         setSalesData(sales);
         setInventoryData(inventory);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setError(error.message);
+      } finally {
         setLoading(false);
-      })
-      .catch((error) => console.error("Error fetching data:", error));
+      }
+    };
+
+    fetchData();
   }, []);
 
   if (loading) {
-    return <p>Loading Dashboard...</p>;
+    return (
+      <div className="p-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="skeleton h-24 w-full"></div>
+          <div className="skeleton h-24 w-full"></div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+          <div className="skeleton h-96 w-full"></div>
+          <div className="skeleton h-96 w-full"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div className="text-red-500 text-center p-4">Error: {error}</div>;
   }
 
   const totalStock = inventoryData.reduce((sum, item) => sum + item.stock, 0);
@@ -50,27 +84,19 @@ const Dashboard = () => {
   return (
     <div className="p-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="card not-prose outline-base-content/5 bg-primary/5 relative overflow-hidden font-sans shadow-lg outline -outline-offset-1 md:flex-row-reverse">
-          <div className="card-body">
-            <h2 className="card-title text-lg font-semibold">
-              Total Inventory Stock
-            </h2>
-            <p className="text-2xl font-bold">{totalStock} items</p>
-          </div>
+        <div className="card bg-primary/5 shadow-lg p-4 rounded-lg">
+          <h2 className="text-lg font-semibold">Total Inventory Stock</h2>
+          <p className="text-2xl font-bold">{totalStock} items</p>
         </div>
-        <div className="card not-prose outline-base-content/5 bg-primary/5 relative overflow-hidden font-sans shadow-lg outline -outline-offset-1 md:flex-row-reverse">
-          <div className="card-body">
-            <h2 className="card-title text-lg font-semibold">
-              Low Stock Items
-            </h2>
-            <p className="text-2xl font-bold text-red-500">
-              {lowStockItems} items
-            </p>
-          </div>
+        <div className="card bg-primary/5 shadow-lg p-4 rounded-lg">
+          <h2 className="text-lg font-semibold">Low Stock Items</h2>
+          <p className="text-2xl font-bold text-red-500">
+            {lowStockItems} items
+          </p>
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-        <div className="p-4 bg-white shadow-lg  rounded-lg w-full h-[400px]">
+        <div className="p-4 bg-white shadow-lg rounded-lg w-full h-[400px]">
           <h3 className="text-lg font-semibold mb-4">Total Sales (Day-wise)</h3>
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
@@ -79,7 +105,7 @@ const Dashboard = () => {
               <Line
                 type="monotone"
                 dataKey="totalSales"
-                stroke="#8884d8"
+                stroke="#155dfc"
                 name="Total Sales"
               />
               <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
@@ -104,7 +130,7 @@ const Dashboard = () => {
               <YAxis dataKey="name" type="category" width={150} />
               <Tooltip />
               <Legend />
-              <Bar dataKey="stock" fill="#8884d8" name="Stock" />
+              <Bar dataKey="stock" fill="#155dfc" name="Stock" />
             </BarChart>
           </ResponsiveContainer>
         </div>

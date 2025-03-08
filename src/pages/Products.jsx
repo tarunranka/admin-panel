@@ -29,7 +29,7 @@ const ProductTable = ({ products }) => (
       <tr>
         <th className="border p-2">Product Name</th>
         <th className="border p-2">SKU</th>
-        <th className="border p-2">Price ($)</th>
+        <th className="border p-2">Price (AED)</th>
         <th className="border p-2">Stock</th>
         <th className="border p-2">Category</th>
         <th className="border p-2">Status</th>

@@ -12,6 +12,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { fetchSalesData, fetchInventoryData } from "../api/dashboardApi";
+import SalesChart from "../components/SalesChart";
 
 const Dashboard = () => {
   const [salesData, setSalesData] = useState([]);
@@ -45,7 +46,7 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <div className="p-4">
+      <div className="p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="skeleton h-24 w-full"></div>
           <div className="skeleton h-24 w-full"></div>
@@ -70,7 +71,7 @@ const Dashboard = () => {
   }));
 
   return (
-    <div className="p-4">
+    <div className="p-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="card bg-primary/5 shadow-lg p-4 rounded-lg">
           <h2 className="text-lg font-semibold">Total Inventory Stock</h2>
@@ -84,28 +85,7 @@ const Dashboard = () => {
         </div>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-        <div className="p-4 bg-white shadow-lg rounded-lg w-full h-[400px]">
-          <h3 className="text-lg font-semibold mb-4 text-black">
-            Total Sales (Day-wise)
-          </h3>
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart
-              data={salesData}
-              margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-              <Line
-                type="monotone"
-                dataKey="totalSales"
-                stroke="#155dfc"
-                name="Total Sales"
-              />
-              <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-              <XAxis dataKey="date" />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-            </LineChart>
-          </ResponsiveContainer>
-        </div>
+        <SalesChart salesData={salesData} />
         <div className="p-4 bg-white shadow-lg rounded-lg w-full h-[400px]">
           <h3 className="text-lg font-semibold mb-4 text-black">
             Inventory Stock Overview

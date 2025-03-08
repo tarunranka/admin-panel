@@ -1,5 +1,8 @@
 import { Link } from "react-router-dom";
 import Menu from "./Menu";
+import { useSelector, useDispatch } from "react-redux";
+
+import { logoutAsync } from "../store/authSlice";
 
 const MenuIcon = ({ htmlFor }) => (
   <label
@@ -21,6 +24,12 @@ const MenuIcon = ({ htmlFor }) => (
 );
 
 const AvatarDropdown = () => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
+  if (!user || !isAuthenticated) return null; // Ensure no unnecessary rendering
+
   return (
     <div className="dropdown dropdown-end">
       <button
@@ -32,7 +41,7 @@ const AvatarDropdown = () => {
             xmlns="http://www.w3.org/2000/svg"
             width="24"
             height="24"
-            viewBox="0 0 24 24"
+            viewBox="0 0 24"
             fill="none"
             stroke="#155dfc"
             strokeWidth="2"
@@ -48,9 +57,11 @@ const AvatarDropdown = () => {
         tabIndex={0}
         className="menu dropdown-content bg-white border border-gray-200 rounded-lg shadow-lg z-50 mt-3 w-48 p-2">
         <li>
-          <a className="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition">
+          <button
+            className="block px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition w-full text-left"
+            onClick={() => dispatch(logoutAsync())}>
             Logout
-          </a>
+          </button>
         </li>
       </ul>
     </div>
@@ -58,6 +69,9 @@ const AvatarDropdown = () => {
 };
 
 const Navbar = () => {
+  const user = useSelector((state) => state.auth.user);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+
   return (
     <div
       className="
@@ -69,7 +83,6 @@ const Navbar = () => {
         <div className="flex-none lg:hidden">
           <MenuIcon htmlFor="my-drawer-3" />
         </div>
-
         {/* Logo Section */}
         <div className="flex flex-1 items-center md:gap-1 lg:gap-2">
           <Link to="/" className="flex">
@@ -93,17 +106,17 @@ const Navbar = () => {
             </span>
           </Link>
         </div>
-
-        {/* Desktop Navigation Links */}
-        <div className="hidden lg:flex items-center gap-4">
-          <Menu horizontal />
-          <AvatarDropdown />
-        </div>
-
-        {/* Mobile Avatar */}
-        <div className="lg:hidden flex items-center">
-          <AvatarDropdown />
-        </div>
+        {user && isAuthenticated ? (
+          <>
+            <div className="hidden lg:flex items-center gap-4">
+              <Menu horizontal />
+              <AvatarDropdown />
+            </div>
+            <div className="lg:hidden flex items-center">
+              <AvatarDropdown />
+            </div>
+          </>
+        ) : null}
       </nav>
     </div>
   );

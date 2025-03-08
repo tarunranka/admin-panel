@@ -1,10 +1,6 @@
 // productsSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import {
-  fetchProductsApi,
-  addProductApi,
-  addProductsAPI,
-} from "../api/productsApi";
+import { fetchProductsApi, addProductApi } from "../api/productsApi";
 
 // Async Thunk to fetch products
 export const fetchProducts = createAsyncThunk(
@@ -24,18 +20,6 @@ export const addProduct = createAsyncThunk(
   async (product, { rejectWithValue }) => {
     try {
       return await addProductApi(product);
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-);
-
-// Async Thunk to add a Multple products
-export const addMultipleProducts = createAsyncThunk(
-  "products/addMultipleProducts",
-  async (product, { rejectWithValue }) => {
-    try {
-      return await addProductsAPI(product);
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -76,18 +60,6 @@ const productsSlice = createSlice({
         state.products.push(action.payload);
       })
       .addCase(addProduct.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.payload;
-      })
-      // Add Product
-      .addCase(addMultipleProducts.pending, (state) => {
-        state.status = "loading";
-      })
-      .addCase(addMultipleProducts.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        state.products.push(action.payload);
-      })
-      .addCase(addMultipleProducts.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });

@@ -1,4 +1,6 @@
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
+import { Provider } from "react-redux";
+import { store } from "./store/store";
 import LoginWithPassword from "./pages/LoginWithPassword";
 import Products from "./pages/Products";
 import Dashboard from "./pages/Dashboard";
@@ -13,15 +15,17 @@ const Layout = () => (
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<Layout />}>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/login" element={<LoginWithPassword />} />
-          <Route path="/products" element={<Products />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/login" element={<LoginWithPassword />} />
+            <Route path="/products" element={<Products />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </Provider>
   );
 }
 

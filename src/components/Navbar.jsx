@@ -88,7 +88,9 @@ const Navbar = () => {
               <path d="m3.3 7 8.7 5 8.7-5"></path>
               <path d="M12 22V12"></path>
             </svg>
-            <span className="ml-2 text-xl font-bold text-gray-900">ERP</span>
+            <span className="ml-2 text-xl font-bold .text-base-content\/60">
+              ERP
+            </span>
           </Link>
         </div>
 

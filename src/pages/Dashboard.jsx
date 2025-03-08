@@ -11,11 +11,7 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-
-const API_BASE_URL =
-  import.meta.env.VITE_API_ENDPOINT || "http://localhost:5173/api";
-const SALES_API_URL = `${API_BASE_URL}/sales`;
-const STOCK_API_URL = `${API_BASE_URL}/inventory`;
+import { fetchSalesData, fetchInventoryData } from "../api/dashboardApi";
 
 const Dashboard = () => {
   const [salesData, setSalesData] = useState([]);
@@ -28,18 +24,10 @@ const Dashboard = () => {
       try {
         setLoading(true);
         setError(null);
-        const [salesResponse, stockResponse] = await Promise.all([
-          fetch(SALES_API_URL),
-          fetch(STOCK_API_URL),
-        ]);
-
-        if (!salesResponse.ok || !stockResponse.ok) {
-          throw new Error("Failed to fetch data");
-        }
 
         const [sales, inventory] = await Promise.all([
-          salesResponse.json(),
-          stockResponse.json(),
+          fetchSalesData(),
+          fetchInventoryData(),
         ]);
 
         setSalesData(sales);

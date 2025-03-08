@@ -30,3 +30,20 @@ export const addProductApi = async (product) => {
     throw new Error(error.message || "An unexpected error occurred");
   }
 };
+
+export const addProductsAPI = async (products) => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/products`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(products),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status} ${response.statusText}`);
+    }
+    return await response.json();
+  } catch (error) {
+    throw new Error(error.message || "An unexpected error occurred");
+  }
+};

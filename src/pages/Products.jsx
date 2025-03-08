@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "../store/productSlice";
+import VariantModal from "../components/VariantModal";
 import { Link } from "react-router-dom";
 
 const Filter = ({ setCategoryFilter, setStockFilter }) => (
@@ -24,42 +25,67 @@ const Filter = ({ setCategoryFilter, setStockFilter }) => (
   </div>
 );
 
-const ProductTable = ({ products }) => (
-  <div className="overflow-x-auto  shadow-md rounded-md p-4">
-    <table className="w-full border-collapse border border-gray-300 text-sm md:text-base">
-      <thead>
-        <tr>
-          <th className="border p-2">Product Name</th>
-          <th className="border p-2">SKU</th>
-          <th className="border p-2">Price (AED)</th>
-          <th className="border p-2">Stock</th>
-          <th className="border p-2">Category</th>
-          <th className="border p-2">Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        {products.length > 0 ? (
-          products.map((product) => (
-            <tr key={product.sku} className="text-center">
-              <td className="border p-2">{product.name}</td>
-              <td className="border p-2">{product.sku}</td>
-              <td className="border p-2">{product.price}</td>
-              <td className="border p-2">{product.stock}</td>
-              <td className="border p-2">{product.category}</td>
-              <td className="border p-2">{product.status}</td>
-            </tr>
-          ))
-        ) : (
+const ProductTable = ({ products }) => {
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  return (
+    <div className="overflow-x-auto  shadow-md rounded-md p-4">
+      <table className="w-full border-collapse border border-gray-300 text-sm md:text-base">
+        <thead>
           <tr>
-            <td colSpan="6" className="border p-2 text-center text-gray-500">
-              No products found
-            </td>
+            <th className="border p-2">Product Name</th>
+            <th className="border p-2">SKU</th>
+            <th className="border p-2">Price (AED)</th>
+            <th className="border p-2">Stock</th>
+            <th className="border p-2">Category</th>
+            <th className="border p-2">Status</th>
+            <th className="border p-2">Variants</th>
           </tr>
-        )}
-      </tbody>
-    </table>
-  </div>
-);
+        </thead>
+        <tbody>
+          {products.length > 0 ? (
+            products.map((product) => (
+              <tr key={product.sku} className="text-center">
+                <td className="border p-2">{product.name}</td>
+                <td className="border p-2">{product.sku}</td>
+                <td className="border p-2">{product.price}</td>
+                <td className="border p-2">{product.stock}</td>
+                <td className="border p-2">{product.category}</td>
+                <td className="border p-2">{product.status}</td>
+                <td className="border p-2">
+                  {typeof product.variants !== "undefined" &&
+                  product.variants &&
+                  Array.isArray(product.variants) &&
+                  product.variants.length > 0 ? (
+                    <button
+                      onClick={() => setSelectedProduct(product)}
+                      className="px-4 py-2 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600">
+                      View Variants
+                    </button>
+                  ) : (
+                    <span className="text-gray-400">No Variants</span>
+                  )}
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="6" className="border p-2 text-center text-gray-500">
+                No products found
+              </td>
+            </tr>
+          )}
+        </tbody>
+      </table>
+      {/* Show Modal if a Product is Selected */}
+      {selectedProduct && (
+        <VariantModal
+          product={selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+        />
+      )}
+    </div>
+  );
+};
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -94,11 +120,6 @@ const Products = () => {
             to="/add-product"
             className="p-2 bg-green-500 text-white rounded-md shadow-md hover:bg-green-600">
             Add Product
-          </Link>
-          <Link
-            to="/add-variants"
-            className="p-2 bg-yellow-500 text-white rounded-md shadow-md hover:bg-yellow-600">
-            Upload Variants
           </Link>
         </div>
       </div>

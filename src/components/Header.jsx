@@ -1,13 +1,16 @@
-import { Box } from "lucide-react";
+import Navbar from "./Navbar";
+import Sidebar from "./Sidebar";
 
 const Header = () => {
-return (
-       <div className="flex items-center">
-        <Box className="h-8 w-8 text-blue-600" />
-        <span className="ml-2 text-xl font-bold text-gray-900">ERP</span>
-      </div>      
-    );
+  return (
+    <div className="drawer">
+      <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
+      <div className="drawer-content flex flex-col">
+        <Navbar />
+      </div>
+      <Sidebar />
+    </div>
+  );
 };
 
 export default Header;
-

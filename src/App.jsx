@@ -1,8 +1,7 @@
-
-import { BrowserRouter, Routes, Route, Outlet} from 'react-router-dom';
-import LoginWithPassword from './pages/LoginWithPassword';
-import Dashboard from './pages/Dashboard';
-import Header from './components/Header';
+import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
+import LoginWithPassword from "./pages/LoginWithPassword";
+import Dashboard from "./pages/Dashboard";
+import Header from "./components/Header";
 
 const Layout = () => (
   <>
@@ -13,15 +12,15 @@ const Layout = () => (
 
 function App() {
   return (
-  <BrowserRouter>
+    <BrowserRouter>
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Dashboard />} />
           <Route path="/login" element={<LoginWithPassword />} />
         </Route>
       </Routes>
-  </BrowserRouter>
-  )
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;

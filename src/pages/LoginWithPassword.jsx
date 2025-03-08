@@ -51,7 +51,7 @@ const Input = styled.input`
   border-radius: 0.5rem;
   font-size: 1rem;
   transition: all 0.3s ease;
-
+  color: #000;
   &:focus {
     outline: none;
     border-color: #667eea;

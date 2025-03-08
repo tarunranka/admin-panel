@@ -1,5 +1,12 @@
-import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
-import { Provider } from "react-redux";
+import React, { useMemo } from "react";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  Outlet,
+} from "react-router-dom";
+import { Provider, useSelector } from "react-redux";
 import { store } from "./store/store";
 import LoginWithPassword from "./pages/LoginWithPassword";
 import Products from "./pages/Products";
@@ -15,17 +22,35 @@ const Layout = () => (
   </>
 );
 
+const PrivateRoute = () => {
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const shouldRender = useMemo(() => isAuthenticated, [isAuthenticated]);
+
+  return shouldRender ? <Outlet /> : <Navigate to="/login" replace />;
+};
+
+const PublicRoute = () => {
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const shouldRender = useMemo(() => !isAuthenticated, [isAuthenticated]);
+
+  return shouldRender ? <Outlet /> : <Navigate to="/" replace />;
+};
+
 function App() {
   return (
     <Provider store={store}>
       <BrowserRouter>
         <Routes>
           <Route element={<Layout />}>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/login" element={<LoginWithPassword />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/add-product" element={<AddProduct />} />
-            <Route path="/sales" element={<Sales />} />
+            <Route element={<PublicRoute />}>
+              <Route path="/login" element={<LoginWithPassword />} />
+            </Route>
+            <Route element={<PrivateRoute />}>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/products" element={<Products />} />
+              <Route path="/add-product" element={<AddProduct />} />
+              <Route path="/sales" element={<Sales />} />
+            </Route>
           </Route>
         </Routes>
       </BrowserRouter>

@@ -5,16 +5,16 @@ const Menu = ({ horizontal = false }) => {
     <ul className={`menu ${horizontal ? "menu-horizontal px-1" : ""}`}>
       <li>
         <Link
-          to="/products"
+          to="/"
           className="text-sm/6 text-gray-950 dark:text-white hover:underline">
-          Products
+          Dashboard
         </Link>
       </li>
       <li>
         <Link
-          to="/"
+          to="/products"
           className="text-sm/6 text-gray-950 dark:text-white hover:underline">
-          Dashboard
+          Products
         </Link>
       </li>
     </ul>

@@ -1,6 +1,12 @@
 # React + Vite
 
+- Run Moc server using npx json-server --port 5001
+
+http://localhost:5173/api/sales
+http://localhost:5173/api/inventory
+
 # admin-panel
+
 - node -v v22.14.0
 - yarn -v 1.22.17
 - Create a Vite + React Application

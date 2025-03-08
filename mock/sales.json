@@ -1,0 +1,14 @@
+
+  [
+    { "date": "2024-03-01", "totalSales": 1200 },
+    { "date": "2024-03-02", "totalSales": 1500 },
+    { "date": "2024-03-03", "totalSales": 1800 },
+    { "date": "2024-03-04", "totalSales": 1100 },
+    { "date": "2024-03-05", "totalSales": 2000 },
+    { "date": "2024-03-06", "totalSales": 1700 },
+    { "date": "2024-03-07", "totalSales": 2200 },
+    { "date": "2024-03-08", "totalSales": 1900 },
+    { "date": "2024-03-09", "totalSales": 2100 },
+    { "date": "2024-03-10", "totalSales": 2300 }
+  ]
+

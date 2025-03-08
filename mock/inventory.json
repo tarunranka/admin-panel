@@ -1,0 +1,12 @@
+[
+  { "id": 1, "name": "Laptop", "stock": 10 },
+  { "id": 2, "name": "Smartphone", "stock": 5 },
+  { "id": 3, "name": "Tablet", "stock": 0 },
+  { "id": 4, "name": "Headphones", "stock": 25 },
+  { "id": 5, "name": "Smartwatch", "stock": 7 },
+  { "id": 6, "name": "Wireless Mouse", "stock": 50 },
+  { "id": 7, "name": "Bluetooth Speaker", "stock": 8 },
+  { "id": 8, "name": "Air Conditioner", "stock": 3 },
+  { "id": 9, "name": "Refrigerator", "stock": 4 },
+  { "id": 10, "name": "Microwave Oven", "stock": 0 }
+]

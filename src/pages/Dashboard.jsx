@@ -85,7 +85,9 @@ const Dashboard = () => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
         <div className="p-4 bg-white shadow-lg rounded-lg w-full h-[400px]">
-          <h3 className="text-lg font-semibold mb-4">Total Sales (Day-wise)</h3>
+          <h3 className="text-lg font-semibold mb-4 text-black">
+            Total Sales (Day-wise)
+          </h3>
           <ResponsiveContainer width="100%" height="100%">
             <LineChart
               data={salesData}
@@ -105,7 +107,7 @@ const Dashboard = () => {
           </ResponsiveContainer>
         </div>
         <div className="p-4 bg-white shadow-lg rounded-lg w-full h-[400px]">
-          <h3 className="text-lg font-semibold mb-4">
+          <h3 className="text-lg font-semibold mb-4 text-black">
             Inventory Stock Overview
           </h3>
           <ResponsiveContainer width="100%" height="100%">

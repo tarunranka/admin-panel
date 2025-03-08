@@ -5,6 +5,7 @@
 - yarn -v 1.22.17
 - Create a Vite + React Application
 - Install Tailwind css
+- Install react-router-dom @reduxjs/toolkit react-redux styled-components
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 

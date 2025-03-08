@@ -17,6 +17,13 @@ const Menu = ({ horizontal = false }) => {
           Products
         </Link>
       </li>
+      <li>
+        <Link
+          to="/sales"
+          className="text-sm/6 text-gray-950 dark:text-white hover:underline">
+          Sales
+        </Link>
+      </li>
     </ul>
   );
 };

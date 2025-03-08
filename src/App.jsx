@@ -5,6 +5,7 @@ import LoginWithPassword from "./pages/LoginWithPassword";
 import Products from "./pages/Products";
 import AddProduct from "./pages/AddProduct";
 import Dashboard from "./pages/Dashboard";
+import Sales from "./pages/Sales";
 import Header from "./components/Header";
 
 const Layout = () => (
@@ -24,6 +25,7 @@ function App() {
             <Route path="/login" element={<LoginWithPassword />} />
             <Route path="/products" element={<Products />} />
             <Route path="/add-product" element={<AddProduct />} />
+            <Route path="/sales" element={<Sales />} />
           </Route>
         </Routes>
       </BrowserRouter>

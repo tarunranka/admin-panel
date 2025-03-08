@@ -1,9 +1,10 @@
 # React + Vite
 
-- Run Moc server using npx json-server --port 5001
+- Run Mock server using npx json-server --port 5001
 
-http://localhost:5173/api/sales
-http://localhost:5173/api/inventory
+- http://localhost:5173/api/sales
+- http://localhost:5173/api/inventory
+- http://localhost:5173/api/products
 
 # admin-panel
 

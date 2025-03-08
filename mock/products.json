@@ -121,8 +121,8 @@
   },
   {
     "name": "iPhone",
-    "sku": "2323",
-    "price": 23,
+    "sku": "SKU2323",
+    "price": 5000,
     "stock": 223,
     "category": "Electronics",
     "status": "In Stock"

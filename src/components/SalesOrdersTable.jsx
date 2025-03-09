@@ -24,15 +24,18 @@ const SalesOrdersTable = ({ orders }) => {
                 <td className="border p-3">{order.id}</td>
                 <td className="border p-3 whitespace-nowrap">{order.date}</td>
                 <td className="border p-3">${order.amount.toFixed(2)}</td>
-                <td
-                  className={`border p-3 font-semibold ${
-                    order.status === "Paid"
-                      ? "text-green-500"
-                      : order.status === "Pending"
-                      ? "text-yellow-500"
-                      : "text-red-500"
-                  }`}>
-                  {order.status}
+                <td className="border p-4 text-center">
+                  <span
+                    className={`px-3 py-1 rounded-lg border-2 font-semibold inline-block
+      ${
+        order.status === "Paid"
+          ? "text-green-600 bg-green-100 border-green-500"
+          : order.status === "Pending"
+          ? "text-yellow-600 bg-yellow-100 border-yellow-500"
+          : "text-red-600 bg-red-100 border-red-500"
+      }`}>
+                    {order.status}
+                  </span>
                 </td>
               </tr>
             ))

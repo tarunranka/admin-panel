@@ -4,7 +4,7 @@ import { fetchSales, fetchSalesOrders } from "../store/salesSlice";
 import SalesChart from "../components/SalesChart";
 import SalesOrdersTable from "../components/SalesOrdersTable";
 
-const SalesOrdersPage = () => {
+const Sales = () => {
   const dispatch = useDispatch();
   const {
     salesData,
@@ -38,6 +38,25 @@ const SalesOrdersPage = () => {
       </div>
     );
   }
+
+  // Filtering Logic
+  const { start: startDateStr, end: endDateStr } = dateRange; // Destructure dateRange
+  const startDate = startDateStr ? new Date(startDateStr) : null;
+  const endDate = endDateStr ? new Date(endDateStr) : null;
+  const minOrderAmount = OrderAmount ? parseFloat(OrderAmount) : null;
+
+  const filteredOrders = salesOrdersData.filter((order) => {
+    const orderDate = new Date(order.date);
+    const isWithinDateRange =
+      (!startDate || orderDate >= startDate) &&
+      (!endDate || orderDate <= endDate);
+
+    const meetsOrderAmount = !minOrderAmount || order.amount >= minOrderAmount;
+
+    const matchesStatus = !statusFilter || order.status === statusFilter;
+
+    return isWithinDateRange && meetsOrderAmount && matchesStatus;
+  });
 
   return (
     <div className="p-6">
@@ -103,11 +122,11 @@ const SalesOrdersPage = () => {
         ) : ordersError ? (
           <p className="text-red-500 text-center">Error: {ordersError}</p>
         ) : (
-          <SalesOrdersTable orders={salesOrdersData} />
+          <SalesOrdersTable orders={filteredOrders} />
         )}
       </div>
     </div>
   );
 };
 
-export default SalesOrdersPage;
+export default Sales;

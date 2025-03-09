@@ -2,7 +2,7 @@ import Menu from "./Menu";
 
 const Sidebar = () => {
   return (
-    <div className="drawer-side">
+    <div className="drawer-side z-[9999]">
       <label
         htmlFor="my-drawer-3"
         aria-label="close sidebar"

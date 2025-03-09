@@ -6,6 +6,9 @@ const Menu = ({ horizontal = false }) => {
       <li>
         <Link
           to="/"
+          onClick={() =>
+            (document.getElementById("menu-drawer").checked = false)
+          }
           className="text-sm/6 text-gray-950 dark:text-white hover:underline">
           Dashboard
         </Link>
@@ -13,6 +16,9 @@ const Menu = ({ horizontal = false }) => {
       <li>
         <Link
           to="/products"
+          onClick={() =>
+            (document.getElementById("menu-drawer").checked = false)
+          }
           className="text-sm/6 text-gray-950 dark:text-white hover:underline">
           Products
         </Link>
@@ -20,6 +26,9 @@ const Menu = ({ horizontal = false }) => {
       <li>
         <Link
           to="/sales"
+          onClick={() =>
+            (document.getElementById("menu-drawer").checked = false)
+          }
           className="text-sm/6 text-gray-950 dark:text-white hover:underline">
           Sales
         </Link>

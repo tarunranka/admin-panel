@@ -73,12 +73,8 @@ const Navbar = () => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   return (
-    <div
-      className="
-  bg-base-100/90 text-base-content sticky top-0 z-30 flex h-16 w-full [transform:translate3d(0,0,0)] justify-center backdrop-blur transition-shadow duration-100 print:hidden
-  shadow-xs
-  ">
-      <nav className="navbar p-6 w-full">
+    <div className="sticky top-0 z-[999] flex w-full items-center">
+      <nav className="navbar bg-base-100 shadow-sm">
         {/* Mobile Menu Button */}
         <div className="flex-none lg:hidden">
           <MenuIcon htmlFor="my-drawer-3" />

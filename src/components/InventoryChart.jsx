@@ -17,7 +17,7 @@ const InventoryChart = ({ inventoryData }) => {
   }));
 
   return (
-    <div className="border p-4 bg-white shadow-lg rounded-lg w-full h-[400px]">
+    <div className="p-4 bg-white shadow-lg w-full h-[400px]">
       <h3 className="text-lg font-semibold mb-4 text-black">
         Inventory Stock Overview
       </h3>

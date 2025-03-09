@@ -12,7 +12,7 @@ import {
 
 const SalesChart = ({ salesData }) => {
   return (
-    <div className="border p-4 bg-white shadow-lg rounded-lg w-full h-[400px]">
+    <div className="p-4 bg-base-100 shadow-lg w-full h-[400px]">
       <h3 className="text-lg text-black font-semibold mb-4">
         Total Sales (Day-wise)
       </h3>

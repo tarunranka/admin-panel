@@ -7,6 +7,7 @@ export const fetchSalesData = async () => {
     if (!response.ok) {
       throw new Error(`Error: ${response.status} ${response.statusText}`);
     }
+
     return await response.json();
   } catch (error) {
     throw new Error(error.message || "Failed to fetch sales data");

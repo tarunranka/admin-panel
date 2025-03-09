@@ -9,7 +9,7 @@ const FormInputField = ({ label, name, type, value, handleChange }) => {
         name={name}
         value={value}
         onChange={handleChange}
-        className="w-full p-2 border rounded-md"
+        className="w-full p-2 border border-gray-300 rounded-md"
         required
         placeholder={label}
       />

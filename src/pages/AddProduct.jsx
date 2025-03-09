@@ -61,7 +61,7 @@ const AddProduct = () => {
           {feedback.message}
         </div>
       )}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 place-items-center">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 place-items-center shadow-lg">
         <form onSubmit={handleSubmit} className="p-4">
           <FormInputField
             label="Name"

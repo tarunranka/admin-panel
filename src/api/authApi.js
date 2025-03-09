@@ -10,7 +10,7 @@ export const loginApi = ({ email, password }) => {
       } else {
         reject(new Error("User not found"));
       }
-    }, 1500);
+    }, 1000);
   });
 };
 

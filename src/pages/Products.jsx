@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "../store/productSlice";
 import VariantModal from "../components/VariantModal";
+import LoadingTable from "../components/LoadingTable";
 import { Link } from "react-router-dom";
 
 const Filter = ({ setCategoryFilter, setStockFilter }) => (
@@ -30,7 +31,7 @@ const ProductTable = ({ products }) => {
 
   return (
     <div className="overflow-x-auto p-4">
-      <table className="w-full border-collapse border border-gray-300 text-sm md:text-base">
+      <table className="w-full border-collapse border-gray-300 text-sm md:text-base">
         <thead>
           <tr>
             <th className="border p-2">Product Name</th>
@@ -113,7 +114,7 @@ const Products = () => {
   return (
     <div className="p-6">
       <h2 className="text-3xl font-bold mb-6 text-center">Product List</h2>
-      <div className="border flex flex-col md:flex-row justify-between items-center mb-6 gap-4 p-4 shadow-md rounded-md">
+      <div className="flex flex-col md:flex-row justify-between items-center mb-6 gap-4 p-4 shadow-lg rounded-md">
         <Filter
           setCategoryFilter={setCategoryFilter}
           setStockFilter={setStockFilter}
@@ -126,9 +127,8 @@ const Products = () => {
           </Link>
         </div>
       </div>
-      {status === "loading" && (
-        <p className="text-center text-gray-700">Loading products...</p>
-      )}
+      {status === "loading" && <LoadingTable />}
+
       {status === "failed" && (
         <p className="text-red-500 text-center">Error: {error}</p>
       )}

@@ -2,11 +2,10 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Lock, Mail } from "lucide-react";
+import { Lock, Mail, Loader2 } from "lucide-react"; // Import Loader2 icon
 import { login } from "../store/authSlice";
 
-// used styled components
-
+// Styled Components
 const Container = styled.div`
   display: flex;
   min-height: 100vh;
@@ -73,22 +72,27 @@ const IconWrapper = styled.div`
 const Button = styled.button`
   width: 100%;
   padding: 0.75rem;
-  background: #667eea;
+  background: ${(props) => (props.disabled ? "#94a3b8" : "#667eea")};
   color: white;
   border: none;
   border-radius: 0.5rem;
   font-size: 1rem;
   font-weight: 600;
-  cursor: pointer;
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 
   &:hover {
-    background: #5a67d8;
+    background: ${(props) => (props.disabled ? "#94a3b8" : "#5a67d8")};
   }
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
+    box-shadow: ${(props) =>
+      props.disabled ? "none" : "0 0 0 3px rgba(102, 126, 234, 0.3)"};
   }
 `;
 
@@ -97,24 +101,31 @@ const ErrorMessage = styled.p`
   text-align: center;
   margin-top: 1rem;
   font-size: 0.875rem;
+  role: alert;
 `;
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false); // Loader state
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { requires2FA, error } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if ("credentials" in navigator) {
-      navigator.credentials.get({ password: true }).then((cred) => {
-        if (cred && !requires2FA) {
-          setEmail(cred.id);
-          setPassword(cred.password);
-          dispatch(login({ email: cred.id, password: cred.password }));
-        }
-      });
+    if (navigator.credentials && navigator.credentials.get) {
+      navigator.credentials
+        .get({ password: true })
+        .then((cred) => {
+          if (cred && !requires2FA) {
+            setEmail(cred.id);
+            setPassword(cred.password);
+            dispatch(login({ email: cred.id, password: cred.password }));
+          }
+        })
+        .catch(() => {
+          console.warn("Credentials API not available or failed");
+        });
     }
   }, [dispatch, requires2FA]);
 
@@ -124,9 +135,16 @@ const LoginPage = () => {
     }
   }, [requires2FA, navigate]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(login({ email, password }));
+    setLoading(true); // Start loading
+
+    try {
+      await dispatch(login({ email, password })).unwrap(); // Ensure action completes
+      setLoading(false); // Stop loading after success
+    } catch (err) {
+      setLoading(false); // Stop loading on error
+    }
   };
 
   return (
@@ -146,7 +164,7 @@ const LoginPage = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              autoComplete="username"
+              autoComplete="email"
               aria-required="true"
             />
           </InputGroup>
@@ -158,7 +176,7 @@ const LoginPage = () => {
             <Input
               id="password"
               type="password"
-              placeholder="123456"
+              placeholder="Enter your password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -167,12 +185,16 @@ const LoginPage = () => {
             />
           </InputGroup>
 
-          <button
-            type="submit"
-            className="w-full mt-6 px-6 py-3 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600">
-            Sign In
-          </button>
-          {error && <ErrorMessage aria-live="assertive">{error}</ErrorMessage>}
+          <Button type="submit" disabled={loading}>
+            {loading ? (
+              <>
+                <Loader2 size={20} className="animate-spin" /> Logging in...
+              </>
+            ) : (
+              "Sign In"
+            )}
+          </Button>
+          {error && <ErrorMessage>{error}</ErrorMessage>}
         </form>
       </LoginCard>
     </Container>

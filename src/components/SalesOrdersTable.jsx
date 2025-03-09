@@ -4,7 +4,7 @@ import React from "react";
 const SalesOrdersTable = ({ orders }) => {
   return (
     <div className="overflow-x-auto">
-      <table className="w-full min-w-max border-collapse border border-gray-300 text-sm md:text-base">
+      <table className="w-full min-w-max border-collapse text-sm md:text-base">
         <thead className="bg-gray-100">
           <tr>
             <th className="border p-3 text-left md:text-center">Order ID</th>

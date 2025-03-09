@@ -5,6 +5,7 @@ import { useNavigate, Link } from "react-router-dom";
 import TwoFactorForm from "../components/TwoFactorForm";
 import { verify2FA } from "../store/authSlice";
 import { selectMemoizedAuth } from "../store/authSelectors";
+import { Loader2 } from "lucide-react"; // Import loader icon
 
 const Container = styled.div`
   display: flex;
@@ -40,6 +41,33 @@ const ErrorMessage = styled.p`
   margin-top: 1rem;
 `;
 
+const Button = styled.button`
+  width: 100%;
+  padding: 0.75rem;
+  background: ${(props) => (props.disabled ? "#94a3b8" : "#667eea")};
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  &:hover {
+    background: ${(props) => (props.disabled ? "#94a3b8" : "#5a67d8")};
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: ${(props) =>
+      props.disabled ? "none" : "0 0 0 3px rgba(102, 126, 234, 0.3)"};
+  }
+`;
+
 const TwoFactorAuth = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -61,20 +89,16 @@ const TwoFactorAuth = () => {
   return (
     <Container>
       <AuthCard>
-        <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">
-          Two-Factor Authentication
-        </h2>
+        <Title>Two-Factor Authentication</Title>
 
         {!email ? (
-          <>
-            <ErrorMessage>
-              Email is missing. Please{" "}
-              <Link to="/login" className="text-blue-500 underline">
-                log in
-              </Link>
-              .
-            </ErrorMessage>
-          </>
+          <ErrorMessage>
+            Email is missing. Please{" "}
+            <Link to="/login" className="text-blue-500 underline">
+              log in
+            </Link>
+            .
+          </ErrorMessage>
         ) : (
           <>
             <p className="text-gray-600 text-sm text-center mb-4">

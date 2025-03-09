@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchSales, fetchSalesOrders } from "../store/salesSlice";
 import SalesChart from "../components/SalesChart";
 import SalesOrdersTable from "../components/SalesOrdersTable";
+import LoadingTable from "../components/LoadingTable";
 
 const Sales = () => {
   const dispatch = useDispatch();
@@ -33,8 +34,8 @@ const Sales = () => {
   if (salesLoading || ordersLoading) {
     return (
       <div className="p-6 space-y-4">
-        <div className="skeleton h-24 w-full"></div>
-        <div className="skeleton h-24 w-full"></div>
+        <div className="skeleton h-[350px] w-full"></div>
+        <LoadingTable />
       </div>
     );
   }
@@ -143,7 +144,7 @@ const Sales = () => {
 
         {/* Sales Orders Table */}
         {ordersLoading ? (
-          <p className="text-center">Loading orders...</p>
+          <LoadingTable />
         ) : ordersError ? (
           <p className="text-red-500 text-center">Error: {ordersError}</p>
         ) : (

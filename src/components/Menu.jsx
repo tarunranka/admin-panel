@@ -9,7 +9,7 @@ const Menu = ({ horizontal = false }) => {
           onClick={() =>
             (document.getElementById("menu-drawer").checked = false)
           }
-          className="text-sm/6 text-gray-950 dark:text-white hover:underline">
+          className="text-sm/6 text-gray-950  hover:underline">
           Dashboard
         </Link>
       </li>
@@ -19,7 +19,7 @@ const Menu = ({ horizontal = false }) => {
           onClick={() =>
             (document.getElementById("menu-drawer").checked = false)
           }
-          className="text-sm/6 text-gray-950 dark:text-white hover:underline">
+          className="text-sm/6 text-gray-950  hover:underline">
           Products
         </Link>
       </li>
@@ -29,7 +29,7 @@ const Menu = ({ horizontal = false }) => {
           onClick={() =>
             (document.getElementById("menu-drawer").checked = false)
           }
-          className="text-sm/6 text-gray-950 dark:text-white hover:underline">
+          className="text-sm/6 text-gray-950  hover:underline">
           Sales
         </Link>
       </li>

@@ -2,25 +2,14 @@
 // authSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
+import { loginApi, verify2FAApi, logoutApi } from "../api/authApi";
 
-// Login action
+// Step 1: Login (but require 2FA)
 export const login = createAsyncThunk(
   "auth/login",
   async ({ email, password }, { rejectWithValue }) => {
     try {
-      return await new Promise((resolve) => {
-        setTimeout(() => {
-          const token = "fake-token";
-          Cookies.set("token", token);
-
-          if (window.PasswordCredential) {
-            const cred = new PasswordCredential({ id: email, password });
-            navigator.credentials.store(cred);
-          }
-
-          resolve({ token, email, firstName: "Tarun", lastName: "User" });
-        }, 1500);
-      });
+      return await loginApi({ email, password });
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -29,15 +18,7 @@ export const login = createAsyncThunk(
 
 // Logout action
 export const logoutAsync = createAsyncThunk("auth/logout", async () => {
-  return await new Promise((resolve) => {
-    setTimeout(() => {
-      Cookies.remove("token");
-      if (navigator.credentials && navigator.credentials.preventSilentAccess) {
-        navigator.credentials.preventSilentAccess();
-      }
-      resolve();
-    }, 1000);
-  });
+  return await logoutApi();
 });
 
 // Initial state
@@ -64,6 +45,11 @@ const authSlice = createSlice({
         state.isAuthenticated = true;
         state.user = action.payload;
         state.error = null;
+      })
+      .addCase(login.rejected, (state, action) => {
+        state.isAuthenticated = false;
+        state.error = action.payload;
+        state.user = null;
       })
       .addCase(logoutAsync.fulfilled, (state) => {
         state.isAuthenticated = false;

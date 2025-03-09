@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchProducts } from "../store/productSlice";
 import VariantModal from "../components/VariantModal";
@@ -27,8 +27,9 @@ const Filter = ({ setCategoryFilter, setStockFilter }) => (
 
 const ProductTable = ({ products }) => {
   const [selectedProduct, setSelectedProduct] = useState(null);
+
   return (
-    <div className="overflow-x-auto  shadow-md rounded-md p-4">
+    <div className="overflow-x-auto shadow-md rounded-md p-4">
       <table className="w-full border-collapse border border-gray-300 text-sm md:text-base">
         <thead>
           <tr>
@@ -52,9 +53,7 @@ const ProductTable = ({ products }) => {
                 <td className="border p-2">{product.category}</td>
                 <td className="border p-2">{product.status}</td>
                 <td className="border p-2">
-                  {typeof product.variants !== "undefined" &&
-                  product.variants &&
-                  Array.isArray(product.variants) &&
+                  {Array.isArray(product.variants) &&
                   product.variants.length > 0 ? (
                     <button
                       onClick={() => setSelectedProduct(product)}
@@ -69,14 +68,13 @@ const ProductTable = ({ products }) => {
             ))
           ) : (
             <tr>
-              <td colSpan="6" className="border p-2 text-center text-gray-500">
+              <td colSpan="7" className="border p-2 text-center text-gray-500">
                 No products found
               </td>
             </tr>
           )}
         </tbody>
       </table>
-      {/* Show Modal if a Product is Selected */}
       {selectedProduct && (
         <VariantModal
           product={selectedProduct}
@@ -93,19 +91,24 @@ const Products = () => {
   const [categoryFilter, setCategoryFilter] = useState("");
   const [stockFilter, setStockFilter] = useState("");
 
+  const isFetched = useRef(false); // Prevent duplicate fetch calls
+
   useEffect(() => {
-    if (status === "idle") {
+    if (!isFetched.current && status === "idle") {
       dispatch(fetchProducts());
+      isFetched.current = true;
     }
   }, [dispatch, status]);
 
-  const filteredProducts = Array.isArray(products)
-    ? products.filter(
-        (product) =>
-          (categoryFilter === "" || product.category === categoryFilter) &&
-          (stockFilter === "" || product.status === stockFilter)
-      )
-    : [];
+  const filteredProducts = useMemo(() => {
+    return Array.isArray(products)
+      ? products.filter(
+          (product) =>
+            (categoryFilter === "" || product.category === categoryFilter) &&
+            (stockFilter === "" || product.status === stockFilter)
+        )
+      : [];
+  }, [products, categoryFilter, stockFilter]);
 
   return (
     <div className="p-6">

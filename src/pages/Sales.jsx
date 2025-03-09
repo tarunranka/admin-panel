@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-
 import { fetchSales } from "../store/salesSlice";
 import SalesChart from "../components/SalesChart";
 
@@ -8,8 +7,13 @@ const Sales = () => {
   const dispatch = useDispatch();
   const { salesData, loading, error } = useSelector((state) => state.sales);
 
+  const isFetched = useRef(false); // Prevents duplicate fetch in Strict Mode
+
   useEffect(() => {
-    dispatch(fetchSales());
+    if (!isFetched.current) {
+      dispatch(fetchSales());
+      isFetched.current = true;
+    }
   }, [dispatch]);
 
   if (loading) {

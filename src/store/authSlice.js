@@ -47,7 +47,6 @@ const initialState = {
     ? { firstName: "Tarun", lastName: "User", email: "" }
     : null,
   error: null,
-  isRegistered: false,
 };
 
 // Auth slice

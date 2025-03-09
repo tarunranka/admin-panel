@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { fetchSalesData, fetchInventoryData } from "../api/dashboardApi";
 import InventoryChart from "../components/InventoryChart";
 import SalesChart from "../components/SalesChart";
@@ -10,7 +10,12 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const isFetched = useRef(false); // Prevent duplicate API calls
+
   useEffect(() => {
+    if (isFetched.current) return; // Ensure API calls run only once
+    isFetched.current = true;
+
     const fetchData = async () => {
       try {
         setLoading(true);

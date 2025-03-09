@@ -23,7 +23,7 @@ const SalesOrdersTable = ({ orders }) => {
                 className="text-left md:text-center border-b hover:bg-gray-50 transition">
                 <td className="border p-3">{order.id}</td>
                 <td className="border p-3 whitespace-nowrap">{order.date}</td>
-                <td className="border p-3">${order.amount.toFixed(2)}</td>
+                <td className="border p-3">AED {order.amount.toFixed(2)}</td>
                 <td className="border p-4 text-center">
                   <span
                     className={`px-3 py-1 rounded-lg border-2 font-semibold inline-block

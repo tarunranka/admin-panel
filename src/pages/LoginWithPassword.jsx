@@ -5,6 +5,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { Lock, Mail } from "lucide-react";
 import { login } from "../store/authSlice";
 
+// used styled components
+
 const Container = styled.div`
   display: flex;
   min-height: 100vh;

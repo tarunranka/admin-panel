@@ -13,6 +13,7 @@ import Products from "./pages/Products";
 import AddProduct from "./pages/AddProduct";
 import Dashboard from "./pages/Dashboard";
 import Sales from "./pages/Sales";
+import NotFound from "./pages/NotFound";
 import Header from "./components/Header";
 
 const Layout = () => (
@@ -51,6 +52,7 @@ function App() {
               <Route path="/add-product" element={<AddProduct />} />
               <Route path="/sales" element={<Sales />} />
             </Route>
+            <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
       </BrowserRouter>

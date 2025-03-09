@@ -17,7 +17,7 @@ const SalesOrdersPage = () => {
 
   // Filters State
   const [dateRange, setDateRange] = useState({ start: "", end: "" });
-  const [minAmount, setMinAmount] = useState("");
+  const [OrderAmount, setOrderAmount] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
 
   const isFetched = useRef(false); // Prevents duplicate fetch in Strict Mode
@@ -79,9 +79,9 @@ const SalesOrdersPage = () => {
           {/* Minimum Order Amount Filter */}
           <input
             type="number"
-            placeholder="Min Order Amount"
-            value={minAmount}
-            onChange={(e) => setMinAmount(e.target.value)}
+            placeholder="Order Amount"
+            value={OrderAmount}
+            onChange={(e) => setOrderAmount(e.target.value)}
             className="border p-2 rounded-md"
           />
 

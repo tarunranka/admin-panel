@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import TwoFactorForm from "../components/TwoFactorForm";
 import { verify2FA } from "../store/authSlice";
 import { selectMemoizedAuth } from "../store/authSelectors";
@@ -55,11 +55,6 @@ const TwoFactorAuth = () => {
   }, [isAuthenticated, navigate]);
 
   const handleVerify2FA = (code) => {
-    if (!email) {
-      console.error("Email is missing, cannot verify 2FA.");
-      return;
-    }
-
     dispatch(verify2FA({ email, code }));
   };
 
@@ -69,10 +64,26 @@ const TwoFactorAuth = () => {
         <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">
           Two-Factor Authentication
         </h2>
-        <p className="text-gray-600 text-sm text-center mb-4">
-          Enter the verification code sent to {email || "your email"}.
-        </p>
-        <TwoFactorForm onVerify={handleVerify2FA} loading={loading} />
+
+        {!email ? (
+          <>
+            <ErrorMessage>
+              Email is missing. Please{" "}
+              <Link to="/login" className="text-blue-500 underline">
+                log in
+              </Link>
+              .
+            </ErrorMessage>
+          </>
+        ) : (
+          <>
+            <p className="text-gray-600 text-sm text-center mb-4">
+              Enter the verification code sent to <strong>{email}</strong>.
+            </p>
+            <TwoFactorForm onVerify={handleVerify2FA} loading={loading} />
+          </>
+        )}
+
         {error && <ErrorMessage>{error}</ErrorMessage>}
       </AuthCard>
     </Container>

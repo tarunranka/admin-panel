@@ -20,11 +20,11 @@ export const verify2FA = createAsyncThunk(
   "auth/verify2FA",
   async ({ email, code }, { rejectWithValue }) => {
     try {
-      console.log("Verifying 2FA for email:", email);
-      console.log("Entered Code:", code);
-
-      const response = await verify2FAApi({ email, code });
-      return response;
+      if (email) {
+        const response = await verify2FAApi({ email, code });
+        return response;
+      }
+      return rejectWithValue({ error: "Email is missing" });
     } catch (error) {
       return rejectWithValue(error);
     }
@@ -85,7 +85,7 @@ const authSlice = createSlice({
       .addCase(verify2FA.rejected, (state, action) => {
         state.requires2FA = true;
         state.isAuthenticated = false;
-        state.user = { email: action.payload.email };
+        state.user = { email: action.payload?.email };
         state.error = action.payload.error;
       })
       .addCase(logoutAsync.fulfilled, (state) => {

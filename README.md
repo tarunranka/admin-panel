@@ -1,26 +1,87 @@
-# React + Vite
+# Admin Panel
 
-- Run Mock server using npx json-server --port 5001
+## Overview
 
-- http://localhost:5173/api/sales
-- http://localhost:5173/api/inventory
-- http://localhost:5173/api/products
+This project is an admin panel built using React and Vite, designed for managing sales, inventory, and products. It includes a mock backend using `json-server` for easy API simulation.
 
-# admin-panel
+## Features
 
-- node -v v22.14.0
-- yarn -v 1.22.17
-- Create a Vite + React Application
-- Install Tailwind css
-- Install react-router-dom @reduxjs/toolkit react-redux styled-components
+- **Frontend**: React with Vite for fast development.
+- **Styling**: Tailwind CSS and styled-components.
+- **Navigation**: React Router.
+- **State Management**: Redux Toolkit.
+- **Mock Backend**: `json-server` with endpoints for sales, inventory, and products.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Node and Yarn Version
 
-Currently, two official plugins are available:
+- **Node**: v22.14.0
+- **Yarn**: 1.22.17
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Mock Backend
 
-## Expanding the ESLint configuration
+To run the mock backend, use the following command:
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```sh
+npx json-server --watch db.json --port 5001
+```
+
+Available API Endpoints:
+
+- `http://localhost:5173/api/sales`
+- `http://localhost:5173/api/inventory`
+- `http://localhost:5173/api/products`
+
+## Setup & Usage
+
+### Install Dependencies
+
+```sh
+yarn install
+```
+
+### Start the Application
+
+```sh
+yarn dev
+```
+
+## Redux Slices (State Management)
+
+Each slice represents a feature module (e.g., products, sales, auth) and defines:
+
+- **State**: Stores data relevant to the feature.
+- **Async Thunks**: Handles asynchronous API calls (e.g., fetching products, sales data, login).
+- **Reducers**: Defines how state updates based on dispatched actions.
+
+### How it Works
+
+#### Async Actions (e.g., `fetchProducts`, `addProduct`)
+
+- Calls API functions (`fetchProductsApi`, `addProductApi`).
+- Handles pending, fulfilled, and rejected states.
+
+#### State Properties
+
+- `items`: Stores the list of products.
+- `status`: Tracks API call status (loading, succeeded, failed).
+- `error`: Stores error messages.
+
+#### Example Usage
+
+**Dispatching an Action (`fetchProducts`)**
+
+- `useDispatch()` gets the Redux dispatch function.
+- `dispatch(fetchProducts())` triggers the API call when the component mounts.
+
+**Accessing Redux State (`useSelector`)**
+
+- `useSelector((state) => state.products)` gets the current state.
+- `items` contains the product list.
+- `status` handles loading states.
+- `error` shows API errors.
+
+**Rendering Data**
+
+- If loading, show a message.
+- If error, display an error.
+- Otherwise, display product table.

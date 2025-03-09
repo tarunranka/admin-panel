@@ -9,6 +9,7 @@ import {
 import { Provider, useSelector } from "react-redux";
 import { store } from "./store/store";
 import LoginWithPassword from "./pages/LoginWithPassword";
+import TwoFactorAuth from "./pages/TwoFactorAuth";
 import Products from "./pages/Products";
 import AddProduct from "./pages/AddProduct";
 import Dashboard from "./pages/Dashboard";
@@ -45,6 +46,7 @@ function App() {
           <Route element={<Layout />}>
             <Route element={<PublicRoute />}>
               <Route path="/login" element={<LoginWithPassword />} />
+              <Route path="/verify" element={<TwoFactorAuth />} />
             </Route>
             <Route element={<PrivateRoute />}>
               <Route path="/" element={<Dashboard />} />

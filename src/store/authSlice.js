@@ -42,18 +42,19 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(login.fulfilled, (state, action) => {
-        state.isAuthenticated = true;
-        state.user = action.payload;
+        state.requires2FA = action.payload.requires2FA;
+        state.user = { email: action.payload.email };
         state.error = null;
       })
       .addCase(login.rejected, (state, action) => {
-        state.isAuthenticated = false;
-        state.error = action.payload;
-        state.user = null;
+        state.requires2FA = false;
+        state.user = { email: action.payload.email };
+        state.error = null;
       })
       .addCase(logoutAsync.fulfilled, (state) => {
         state.isAuthenticated = false;
         state.user = null;
+        state.requires2FA = false;
         state.error = null;
       });
   },

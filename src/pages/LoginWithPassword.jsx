@@ -103,26 +103,25 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const error = useSelector((state) => state.auth.error);
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const { requires2FA, error } = useSelector((state) => state.auth);
 
   useEffect(() => {
     if ("credentials" in navigator) {
       navigator.credentials.get({ password: true }).then((cred) => {
-        if (cred && !isAuthenticated) {
+        if (cred && !requires2FA) {
           setEmail(cred.id);
           setPassword(cred.password);
           dispatch(login({ email: cred.id, password: cred.password }));
         }
       });
     }
-  }, [dispatch, isAuthenticated]);
+  }, [dispatch, requires2FA]);
 
   useEffect(() => {
-    if (isAuthenticated) {
-      navigate("/", { replace: true });
+    if (requires2FA) {
+      navigate("/verify", { replace: true });
     }
-  }, [isAuthenticated, navigate]);
+  }, [requires2FA, navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

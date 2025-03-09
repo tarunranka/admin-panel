@@ -25,12 +25,7 @@ export const loginApi = ({ email, password }) =>
     setTimeout(() => {
       const token = "fake-token";
       if (password === "123456") {
-        resolve({
-          token: "fake-token",
-          email: email,
-          firstName: "Tarun",
-          lastName: "Ranka",
-        });
+        resolve({ requires2FA: true, email });
       } else {
         reject(new Error("User not found"));
       }

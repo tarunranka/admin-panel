@@ -16,6 +16,18 @@ export const login = createAsyncThunk(
   }
 );
 
+// Step 2: Verify 2FA and Authenticate
+export const verify2FA = createAsyncThunk(
+  "auth/verify2FA",
+  async ({ email, code }, { rejectWithValue }) => {
+    try {
+      return await verify2FAApi(code);
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 // Logout action
 export const logoutAsync = createAsyncThunk("auth/logout", async () => {
   return await logoutApi();

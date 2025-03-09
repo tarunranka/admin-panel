@@ -1,9 +1,22 @@
 /* eslint-disable no-unused-vars */
-import Cookies from "js-cookie";
+
+// Mock API: login with password
+
+export const loginApi = ({ email, password }) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      if (password === "123456") {
+        resolve({ requires2FA: true, email });
+      } else {
+        reject(new Error("User not found"));
+      }
+    }, 1500);
+  });
+};
 
 // Mock API: 2FA verification
-export const verify2FAApi = (code) =>
-  new Promise((resolve, reject) => {
+export const verify2FAApi = (code) => {
+  return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (code === "123456") {
         resolve({
@@ -17,29 +30,13 @@ export const verify2FAApi = (code) =>
       }
     }, 1000);
   });
-
-// Mock API: login with password
-
-export const loginApi = ({ email, password }) =>
-  new Promise((resolve, reject) => {
-    setTimeout(() => {
-      const token = "fake-token";
-      if (password === "123456") {
-        resolve({ requires2FA: true, email });
-      } else {
-        reject(new Error("User not found"));
-      }
-    }, 1500);
-  });
+};
 
 // Mock API: logout
-export const logoutApi = () =>
-  new Promise((resolve) => {
+export const logoutApi = () => {
+  return new Promise((resolve) => {
     setTimeout(() => {
-      Cookies.remove("token");
-      if (navigator.credentials && navigator.credentials.preventSilentAccess) {
-        navigator.credentials.preventSilentAccess();
-      }
       resolve();
     }, 1000);
   });
+};

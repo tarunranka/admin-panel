@@ -21,7 +21,7 @@ export const verify2FA = createAsyncThunk(
   "auth/verify2FA",
   async ({ email, code }, { rejectWithValue }) => {
     try {
-      return await verify2FAApi(code);
+      return verify2FAApi(code);
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -29,15 +29,24 @@ export const verify2FA = createAsyncThunk(
 );
 
 // Logout action
-export const logoutAsync = createAsyncThunk("auth/logout", async () => {
-  return await logoutApi();
-});
+export const logoutAsync = createAsyncThunk(
+  "auth/logout",
+  async (_, { rejectWithValue }) => {
+    try {
+      logoutApi();
+      return true; // Successful logout
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
 // Initial state
 const initialState = {
   isAuthenticated: !!Cookies.get("token"),
+  requires2FA: false,
   user: Cookies.get("token")
-    ? { firstName: "Tarun", lastName: "User", email: "" }
+    ? { firstName: "", lastName: "", email: "" }
     : null,
   error: null,
 };
@@ -61,9 +70,28 @@ const authSlice = createSlice({
       .addCase(login.rejected, (state, action) => {
         state.requires2FA = false;
         state.user = { email: action.payload.email };
+        state.error = action.payload;
+      })
+      .addCase(verify2FA.fulfilled, (state, action) => {
+        Cookies.set("token", action.payload.token, { expires: 1 });
+        state.isAuthenticated = true;
+        state.requires2FA = false;
+        state.user = action.payload;
         state.error = null;
       })
+      .addCase(verify2FA.rejected, (state, action) => {
+        state.error = action.payload;
+      })
       .addCase(logoutAsync.fulfilled, (state) => {
+        Cookies.remove("token"); // Remove token on logout
+
+        if (
+          navigator.credentials &&
+          navigator.credentials.preventSilentAccess
+        ) {
+          navigator.credentials.preventSilentAccess();
+        }
+
         state.isAuthenticated = false;
         state.user = null;
         state.requires2FA = false;

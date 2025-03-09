@@ -5,7 +5,9 @@ import SalesChart from "../components/SalesChart";
 
 const Sales = () => {
   const dispatch = useDispatch();
-  const { salesData, loading, error } = useSelector((state) => state.sales);
+  const { salesData, salesLoading, salesError } = useSelector(
+    (state) => state.sales
+  );
 
   const isFetched = useRef(false); // Prevents duplicate fetch in Strict Mode
 
@@ -16,7 +18,7 @@ const Sales = () => {
     }
   }, [dispatch]);
 
-  if (loading) {
+  if (salesLoading) {
     return (
       <div className="p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -27,8 +29,10 @@ const Sales = () => {
     );
   }
 
-  if (error) {
-    return <div className="text-red-500 text-center p-4">Error: {error}</div>;
+  if (salesError) {
+    return (
+      <div className="text-red-500 text-center p-4">Error: {salesError}</div>
+    );
   }
 
   return (

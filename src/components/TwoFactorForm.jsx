@@ -1,41 +1,69 @@
+// components/TwoFactorForm.js
 import React, { useState } from "react";
+import styled from "styled-components";
 
-const TwoFactorForm = ({ onVerify }) => {
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+const Input = styled.input`
+  padding: 0.8rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  text-align: center;
+  letter-spacing: 3px;
+  width: 100%;
+  max-width: 250px;
+  margin: 0 auto;
+`;
+
+const Button = styled.button`
+  padding: 0.8rem;
+  font-size: 1rem;
+  background-color: ${({ disabled }) => (disabled ? "#ccc" : "#007bff")};
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
+  transition: background 0.3s;
+`;
+
+const ErrorMessage = styled.p`
+  color: red;
+  font-size: 0.9rem;
+`;
+
+const TwoFactorForm = ({ onVerify, loading, error }) => {
   const [code, setCode] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (code.trim() !== "") {
+    if (code.trim().length === 6) {
       onVerify(code);
     }
   };
 
   return (
-    <>
-      <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">
-        Two-Factor Authentication
-      </h2>
-      <p className="text-gray-600 text-sm text-center mb-4">
-        Please enter the 6-digit code sent to your email.
-      </p>
-
-      <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
-        <input
-          type="text"
-          placeholder="Enter 6-digit code"
-          value={code}
-          onChange={(e) => setCode(e.target.value)}
-          maxLength="6"
-          className="border p-3 rounded-md w-full text-center text-lg tracking-widest"
-        />
-
-        <button
-          type="submit"
-          className="mt-6 px-6 py-3 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600">
-          Verify Code
-        </button>
-      </form>
-    </>
+    <Form onSubmit={handleSubmit}>
+      <Input
+        type="text"
+        inputMode="numeric"
+        pattern="[0-9]*"
+        maxLength="6"
+        placeholder="Enter 6-digit code (123456)"
+        value={code}
+        onChange={(e) => setCode(e.target.value)}
+        aria-label="Two-factor authentication code"
+        disabled={loading}
+      />
+      <Button type="submit" disabled={loading || code.length !== 6}>
+        {loading ? "Verifying..." : "Verify"}
+      </Button>
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+    </Form>
   );
 };
 

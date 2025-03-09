@@ -15,18 +15,18 @@ export const loginApi = ({ email, password }) => {
 };
 
 // Mock API: 2FA verification
-export const verify2FAApi = (code) => {
+export const verify2FAApi = async ({ email, code }) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (code === "123456") {
         resolve({
           token: "fake-token-2fa",
-          email: "tarunranka.m@gmail.com",
+          email: email,
           firstName: "Tarun",
           lastName: "Ranka",
         });
       } else {
-        reject(new Error("Invalid 2FA code"));
+        reject({ error: "Invalid 2FA code", email });
       }
     }, 1000);
   });

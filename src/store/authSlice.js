@@ -16,14 +16,17 @@ export const login = createAsyncThunk(
   }
 );
 
-// Step 2: Verify 2FA and Authenticate
 export const verify2FA = createAsyncThunk(
   "auth/verify2FA",
   async ({ email, code }, { rejectWithValue }) => {
     try {
-      return verify2FAApi(code);
+      console.log("Verifying 2FA for email:", email);
+      console.log("Entered Code:", code);
+
+      const response = await verify2FAApi({ email, code });
+      return response;
     } catch (error) {
-      return rejectWithValue(error.message);
+      return rejectWithValue(error);
     }
   }
 );
@@ -33,7 +36,7 @@ export const logoutAsync = createAsyncThunk(
   "auth/logout",
   async (_, { rejectWithValue }) => {
     try {
-      logoutApi();
+      await logoutApi();
       return true; // Successful logout
     } catch (error) {
       return rejectWithValue(error.message);
@@ -80,7 +83,10 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(verify2FA.rejected, (state, action) => {
-        state.error = action.payload;
+        state.requires2FA = true;
+        state.isAuthenticated = false;
+        state.user = { email: action.payload.email };
+        state.error = action.payload.error;
       })
       .addCase(logoutAsync.fulfilled, (state) => {
         Cookies.remove("token"); // Remove token on logout

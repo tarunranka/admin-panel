@@ -12,6 +12,7 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   background: rgba(255, 255, 255, 0.33);
+  margin-top: -64px;
 `;
 
 const AuthCard = styled.div`

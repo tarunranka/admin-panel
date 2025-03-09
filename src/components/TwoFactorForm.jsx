@@ -10,13 +10,12 @@ const Form = styled.form`
 
 const Input = styled.input`
   padding: 0.8rem;
-  font-size: 1rem;
+  font-size: 0.75rem;
   border: 1px solid #ccc;
   border-radius: 0.5rem;
   text-align: center;
   letter-spacing: 3px;
   width: 100%;
-  max-width: 250px;
   margin: 0 auto;
 `;
 

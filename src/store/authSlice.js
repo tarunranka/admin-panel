@@ -44,15 +44,22 @@ export const logoutAsync = createAsyncThunk(
   }
 );
 
+console.log(JSON.parse(Cookies.get("user")));
+
+if (JSON.parse(Cookies.get("user"))) {
+  console.log("User is authenticated");
+}
 // Initial state
 const initialState = {
-  isAuthenticated: !!Cookies.get("token"),
+  isAuthenticated: !!Cookies.get("user"),
   requires2FA: false,
-  user: Cookies.get("token")
-    ? { firstName: "", lastName: "", email: "" }
-    : null,
+  user: JSON.parse(Cookies.get("user"))
+    ? JSON.parse(Cookies.get("user"))
+    : { firstName: "", lastName: "", email: "" },
   error: null,
 };
+
+console.log(initialState);
 
 // Auth slice
 const authSlice = createSlice({
@@ -76,7 +83,8 @@ const authSlice = createSlice({
         state.error = action.payload;
       })
       .addCase(verify2FA.fulfilled, (state, action) => {
-        Cookies.set("token", action.payload.token, { expires: 1 });
+        console.log(action.payload);
+        Cookies.set("user", JSON.stringify(action.payload), { expires: 1 });
         state.isAuthenticated = true;
         state.requires2FA = false;
         state.user = action.payload;
@@ -89,7 +97,7 @@ const authSlice = createSlice({
         state.error = action.payload.error;
       })
       .addCase(logoutAsync.fulfilled, (state) => {
-        Cookies.remove("token"); // Remove token on logout
+        Cookies.remove("user"); // Remove token on logout
 
         if (
           navigator.credentials &&

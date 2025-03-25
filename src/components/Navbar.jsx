@@ -72,6 +72,8 @@ const Navbar = () => {
   const user = useSelector((state) => state.auth.user);
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
+  console.log(user);
+
   return (
     <div className="sticky top-0 z-[999] flex w-full items-center">
       <nav className="navbar bg-base-100 shadow-sm">
@@ -106,10 +108,10 @@ const Navbar = () => {
           <>
             <div className="hidden lg:flex items-center gap-4">
               <Menu horizontal />
-              <AvatarDropdown />
+              <AvatarDropdown /> {user.email}
             </div>
             <div className="lg:hidden flex items-center">
-              <AvatarDropdown />
+              <AvatarDropdown /> {user.email}
             </div>
           </>
         ) : null}

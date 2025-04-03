@@ -44,18 +44,14 @@ export const logoutAsync = createAsyncThunk(
   }
 );
 
-console.log(JSON.parse(Cookies.get("user")));
-
-if (JSON.parse(Cookies.get("user"))) {
-  console.log("User is authenticated");
-}
 // Initial state
 const initialState = {
   isAuthenticated: !!Cookies.get("user"),
   requires2FA: false,
-  user: JSON.parse(Cookies.get("user"))
-    ? JSON.parse(Cookies.get("user"))
-    : { firstName: "", lastName: "", email: "" },
+  user:
+    Cookies.get("user") && JSON.parse(Cookies.get("user"))
+      ? JSON.parse(Cookies.get("user"))
+      : { firstName: "", lastName: "", email: "" },
   error: null,
 };
 
